@@ -64,14 +64,13 @@ export function SignalsSection() {
     if (!sectionRef.current || !headerRef.current || !cardsRef.current) return
 
     const ctx = gsap.context(() => {
-      // Header slide in from left
       gsap.fromTo(
         headerRef.current,
-        { x: -60, opacity: 0 },
+        { y: 30, opacity: 0 },
         {
-          x: 0,
+          y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.9,
           ease: "power3.out",
           scrollTrigger: {
             trigger: headerRef.current,
@@ -85,16 +84,16 @@ export function SignalsSection() {
       if (cards) {
         gsap.fromTo(
           cards,
-          { y: 60, opacity: 0 },
+          { y: 40, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.8,
-            stagger: 0.2,
+            duration: 0.7,
+            stagger: 0.12,
             ease: "power3.out",
             scrollTrigger: {
               trigger: cardsRef.current,
-              start: "top 90%",
+              start: "top 88%",
               toggleActions: "play none none reverse",
             },
           },
@@ -106,24 +105,26 @@ export function SignalsSection() {
   }, [])
 
   return (
-    <section id="signals" ref={sectionRef} className="relative py-20 px-7 md:px-16">
-      {/* Section header */}
-      <div ref={headerRef} className="mb-10 space-y-3 md:pl-4">
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">What&apos;s New</span>
+    <section id="signals" ref={sectionRef} className="relative py-24 px-6 md:px-20 lg:px-32">
+      <div ref={headerRef} className="mx-auto max-w-4xl mb-16 space-y-4">
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">What&apos;s New</span>
+          <span className="h-px flex-1 bg-border/40" />
+        </div>
         <div className="flex flex-wrap items-baseline gap-3">
           <h2 className="font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">Fresh drops</h2>
-          <span className="rounded-full border border-border/60 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-            Quick to scan
+          <span className="rounded-full border border-border/60 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+            Quick scan
           </span>
         </div>
-        <p className="max-w-3xl font-mono text-sm text-muted-foreground leading-relaxed">
-          Single-column, time-ordered updates: dates, drops, and on-site checkpoints. Trimmed for mobile and desktop readability.
+        <p className="max-w-2xl font-mono text-sm text-muted-foreground/90 leading-relaxed">
+          Time-ordered updates on dates, drops, and on-site checkpoints. Minimal, mobile-ready.
         </p>
       </div>
 
-      <div ref={cardsRef} className="mx-auto max-w-5xl space-y-1 md:space-y-2">
+      <div ref={cardsRef} className="mx-auto max-w-4xl space-y-0">
         {signals.map((signal, index) => (
-          <SignalCard key={signal.title} signal={signal} index={index} />
+          <SignalCard key={signal.title} signal={signal} index={index} isLast={index === signals.length - 1} />
         ))}
       </div>
     </section>
@@ -133,32 +134,36 @@ export function SignalsSection() {
 function SignalCard({
   signal,
   index,
+  isLast,
 }: {
   signal: Signal
   index: number
+  isLast: boolean
 }) {
   return (
-    <article className="group relative overflow-hidden border-b border-border/60 pb-6 pt-4 transition-transform duration-200 ease-out hover:-translate-y-[2px]">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-          <span className="rounded-full bg-accent/10 px-2 py-1 text-accent">{signal.tag}</span>
-          <span className="h-3 w-[1px] bg-border" />
-          <time className="text-foreground/80">{signal.date}</time>
+    <article className={`group relative py-6 ${!isLast ? "border-b border-border/50" : ""} transition-all duration-200 hover:pl-2`}>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em]">
+          <span className="rounded-md bg-accent/10 px-2.5 py-1 text-accent font-medium">{signal.tag}</span>
+          <span className="h-3 w-px bg-border/70" />
+          <time className="text-muted-foreground">{signal.date}</time>
         </div>
-        <span className="rounded-full border border-border/60 px-2 py-1 font-mono text-[10px] text-muted-foreground/70">#{String(index + 1).padStart(2, "0")}</span>
+        <span className="font-mono text-[10px] text-muted-foreground/60">#{String(index + 1).padStart(2, "0")}</span>
       </div>
 
-      <h3 className="mt-3 font-[var(--font-bebas)] text-3xl tracking-tight text-foreground group-hover:text-accent transition-colors duration-200">
+      <h3 className="mb-2 font-[var(--font-bebas)] text-3xl md:text-4xl tracking-tight text-foreground group-hover:text-accent transition-colors duration-200">
         {signal.title}
       </h3>
 
-      <p className="mt-2 font-mono text-xs text-muted-foreground leading-relaxed">{signal.note}</p>
+      <p className="font-mono text-xs text-muted-foreground/90 leading-relaxed max-w-3xl">
+        {signal.note}
+      </p>
 
       {signal.status && (
-        <p className="mt-3 inline-flex max-w-max items-center gap-2 rounded-full border border-border/60 bg-muted/20 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-          {signal.status}
-        </p>
+        <div className="mt-3 inline-flex items-center gap-2 rounded-md border border-border/60 bg-muted/30 px-3 py-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{signal.status}</span>
+        </div>
       )}
     </article>
   )
