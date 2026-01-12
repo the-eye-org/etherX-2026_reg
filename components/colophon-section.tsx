@@ -71,26 +71,26 @@ export function ColophonSection() {
     <section
       ref={sectionRef}
       id="colophon"
-      className="relative py-32 pl-6 md:pl-28 pr-6 md:pr-12 border-t border-border/30"
+      className="relative py-20 sm:py-32 px-4 sm:px-6 md:pl-28 md:pr-12 border-t border-border/30"
     >
       {/* Section header */}
-      <div ref={headerRef} className="mb-16">
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">04 / Colophon</span>
-        <h2 className="mt-4 font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">CREDITS</h2>
+      <div ref={headerRef} className="mb-12 sm:mb-16">
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">04 / Colophon</span>
+        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">CREDITS</h2>
       </div>
 
       {/* Multi-column layout */}
-      <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 md:gap-12">
+      <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 md:gap-12">
         {/* Design */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Program</h4>
-          <ul className="space-y-2">
-            <li className="font-mono text-xs text-foreground/80">EtherX Flagship</li>
-            <li className="font-mono text-xs text-foreground/80">CTF + Hackathon</li>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Program</h4>
+          <ul className="space-y-1 sm:space-y-2">
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">EtherX Flagship</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">CTF + Hackathon</li>
           </ul>
         </div>
 
-        {/* Stack */}
+        {/* Stack
         <div className="col-span-1">
           <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Stack</h4>
           <ul className="space-y-2">
@@ -98,35 +98,35 @@ export function ColophonSection() {
             <li className="font-mono text-xs text-foreground/80">Auth & Leaderboard</li>
             <li className="font-mono text-xs text-foreground/80">Sonner Alerts</li>
           </ul>
-        </div>
+        </div> */}
 
         {/* Typography */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Tracks</h4>
-          <ul className="space-y-2">
-            <li className="font-mono text-xs text-foreground/80">Daily CTF</li>
-            <li className="font-mono text-xs text-foreground/80">Final Hackathon</li>
-            <li className="font-mono text-xs text-foreground/80">Vibe Coding</li>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Tracks</h4>
+          <ul className="space-y-1 sm:space-y-2">
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Daily CTF</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Final Hackathon</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Vibe Coding</li>
           </ul>
         </div>
 
         {/* Location */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Location</h4>
-          <ul className="space-y-2">
-            <li className="font-mono text-xs text-foreground/80">CTF: Remote</li>
-            <li className="font-mono text-xs text-foreground/80">Finals: Onsite</li>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Location</h4>
+          <ul className="space-y-1 sm:space-y-2">
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">CTF: Remote</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Finals: Onsite</li>
           </ul>
         </div>
 
         {/* Contact */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Contact</h4>
-          <ul className="space-y-2">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Contact</h4>
+          <ul className="space-y-1 sm:space-y-2">
             <li>
               <a
                 href="mailto:team@etherx.io"
-                className="font-mono text-xs text-foreground/80 hover:text-accent transition-colors duration-200"
+                className="font-mono text-[10px] sm:text-xs text-foreground/80 hover:text-accent transition-colors duration-200"
               >
                 Email
               </a>
@@ -134,7 +134,7 @@ export function ColophonSection() {
             <li>
               <a
                 href="#"
-                className="font-mono text-xs text-foreground/80 hover:text-accent transition-colors duration-200"
+                className="font-mono text-[10px] sm:text-xs text-foreground/80 hover:text-accent transition-colors duration-200"
               >
                 Updates Feed
               </a>
@@ -143,11 +143,11 @@ export function ColophonSection() {
         </div>
 
         {/* Year */}
-        <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Year</h4>
-          <ul className="space-y-2">
-            <li className="font-mono text-xs text-foreground/80">2026</li>
-            <li className="font-mono text-xs text-foreground/80">Flagship Cohort</li>
+        <div className="col-span-1 hidden sm:block">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Year</h4>
+          <ul className="space-y-1 sm:space-y-2">
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">2026</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Flagship Cohort</li>
           </ul>
         </div>
       </div>
@@ -155,12 +155,12 @@ export function ColophonSection() {
       {/* Bottom copyright */}
       <div
         ref={footerRef}
-        className="mt-24 pt-8 border-t border-border/20 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        className="mt-16 sm:mt-24 pt-6 sm:pt-8 border-t border-border/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4"
       >
-        <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
-          © 2025 Signal. All rights reserved.
+        <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest">
+          © 2026 The-EYE. All rights reserved.
         </p>
-        <p className="font-mono text-[10px] text-muted-foreground">Designed with intention. Built with precision.</p>
+        <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">Designed with intention. Built with precision.</p>
       </div>
     </section>
   )

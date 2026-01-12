@@ -35,18 +35,18 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="hero" className="relative min-h-screen flex items-center pl-6 md:pl-28 pr-6 md:pr-12">
+    <section ref={sectionRef} id="hero" className="relative min-h-screen flex items-center px-4 sm:px-6 md:pl-28 md:pr-12 py-12 sm:py-0">
       <AnimatedNoise opacity={0.03} />
 
-      {/* Left vertical labels */}
-      <div className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2">
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground -rotate-90 origin-left block whitespace-nowrap">
+      {/* Left vertical labels - hidden on mobile */}
+      <div className="absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 hidden sm:block">
+        <span className="font-mono text-[8px] sm:text-[10px] uppercase tracking-[0.3em] text-muted-foreground -rotate-90 origin-left block whitespace-nowrap">
           SIGNAL
         </span>
       </div>
 
       {/* Main content */}
-      <div ref={contentRef} className="flex-1 w-full">
+      <div ref={contentRef} className="flex-1 w-full sm:pl-0">
         <SplitFlapAudioProvider>
           <div className="relative">
             <SplitFlapText text="ETHERX 26" speed={80} />
@@ -56,30 +56,30 @@ export function HeroSection() {
           </div>
         </SplitFlapAudioProvider>
 
-        <h2 className="font-[var(--font-bebas)] text-muted-foreground/60 text-[clamp(1rem,3vw,2rem)] mt-4 tracking-wide">
+        <h2 className="font-[var(--font-bebas)] text-muted-foreground/60 text-[clamp(0.875rem,2vw,2rem)] mt-4 tracking-wide">
           Flagship multi-stage security challenge
         </h2>
 
-        <p className="mt-12 max-w-md font-mono text-sm text-muted-foreground leading-relaxed">
+        <p className="mt-6 sm:mt-12 max-w-sm sm:max-w-md font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed">
           Daily remote CTF drops on our portal. Fastest solves rise on the leaderboard. Finalists meet on-site for an
           industry-grade hackathon with full documentation packs, plus side quests like vibe coding and workshops.
         </p>
 
-        <div className="mt-16 flex items-center gap-8">
+        <div className="mt-10 sm:mt-16 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
           <RegistrationDialog
             trigger={
               <button
                 type="button"
-                className="group inline-flex items-center gap-3 border border-foreground/20 px-6 py-3 font-mono text-xs uppercase tracking-widest text-foreground hover:border-accent hover:text-accent transition-all duration-200"
+                className="group inline-flex items-center gap-2 sm:gap-3 border border-foreground/20 px-4 sm:px-6 py-2.5 sm:py-3 font-mono text-[11px] sm:text-xs uppercase tracking-widest text-foreground hover:border-accent hover:text-accent transition-all duration-200 whitespace-nowrap"
               >
                 <ScrambleTextOnHover text="Open Registration" as="span" duration={0.6} />
-                <BitmapChevron className="transition-transform duration-[400ms] ease-in-out group-hover:rotate-45" />
+                <BitmapChevron className="transition-transform duration-[400ms] ease-in-out group-hover:rotate-45 w-4 h-4 sm:w-auto sm:h-auto" />
               </button>
             }
           />
           <a
             href="#signals"
-            className="font-mono text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-200"
+            className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-200"
           >
             Format & Updates
           </a>
@@ -87,11 +87,11 @@ export function HeroSection() {
       </div>
 
       {/* Floating info tag */}
-      <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12">
+      {/* <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12">
         <div className="border border-border px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
           v.01 / Experimental Build
         </div>
-      </div>
+      </div> */}
     </section>
   )
 }

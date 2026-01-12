@@ -94,12 +94,12 @@ export function WorkSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="work" className="relative py-32 pl-6 md:pl-28 pr-6 md:pr-12">
+    <section ref={sectionRef} id="work" className="relative py-20 sm:py-32 px-4 sm:px-6 md:pl-28 md:pr-12">
       {/* Section header */}
-      <div ref={headerRef} className="mb-16 flex items-end justify-between">
+      <div ref={headerRef} className="mb-12 sm:mb-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">02 / Experiments</span>
-          <h2 className="mt-4 font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">SELECTED WORK</h2>
+          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">02 / Experiments</span>
+          <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">SELECTED WORK</h2>
         </div>
         <p className="hidden md:block max-w-xs font-mono text-xs text-muted-foreground text-right leading-relaxed">
           Studies across interface design, agent systems, and visual computation.
@@ -109,7 +109,7 @@ export function WorkSection() {
       {/* Asymmetric grid */}
       <div
         ref={gridRef}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[180px] md:auto-rows-[200px]"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 auto-rows-[120px] sm:auto-rows-[160px] md:auto-rows-[200px]"
       >
         {experiments.map((experiment, index) => (
           <WorkCard key={index} experiment={experiment} index={index} persistHover={index === 0} />
@@ -157,8 +157,8 @@ function WorkCard({
     <article
       ref={cardRef}
       className={cn(
-        "group relative border border-border/40 p-5 flex flex-col justify-between transition-all duration-500 cursor-pointer overflow-hidden",
-        experiment.span,
+        "group relative border border-border/40 p-3 sm:p-5 flex flex-col justify-between transition-all duration-500 cursor-pointer overflow-hidden",
+        experiment.span.replace(/col-span-2/g, "sm:col-span-2 md:col-span-2").replace(/row-span-2/g, "sm:row-span-2 md:row-span-2"),
         isActive && "border-accent/60",
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -174,12 +174,12 @@ function WorkCard({
 
       {/* Content */}
       <div className="relative z-10">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        <span className="font-mono text-[8px] sm:text-[10px] uppercase tracking-widest text-muted-foreground">
           {experiment.medium}
         </span>
         <h3
           className={cn(
-            "mt-3 font-[var(--font-bebas)] text-2xl md:text-4xl tracking-tight transition-colors duration-300",
+            "mt-2 sm:mt-3 font-[var(--font-bebas)] text-lg sm:text-2xl md:text-4xl tracking-tight transition-colors duration-300",
             isActive ? "text-accent" : "text-foreground",
           )}
         >
@@ -191,7 +191,7 @@ function WorkCard({
       <div className="relative z-10">
         <p
           className={cn(
-            "font-mono text-xs text-muted-foreground leading-relaxed transition-all duration-500 max-w-[280px]",
+            "font-mono text-[9px] sm:text-xs text-muted-foreground leading-relaxed transition-all duration-500 max-w-[280px]",
             isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
           )}
         >
@@ -202,7 +202,7 @@ function WorkCard({
       {/* Index marker */}
       <span
         className={cn(
-          "absolute bottom-4 right-4 font-mono text-[10px] transition-colors duration-300",
+          "absolute bottom-2 sm:bottom-4 right-2 sm:right-4 font-mono text-[8px] sm:text-[10px] transition-colors duration-300",
           isActive ? "text-accent" : "text-muted-foreground/40",
         )}
       >
@@ -212,7 +212,7 @@ function WorkCard({
       {/* Corner line */}
       <div
         className={cn(
-          "absolute top-0 right-0 w-12 h-12 transition-all duration-500",
+          "absolute top-0 right-0 w-8 sm:w-12 h-8 sm:h-12 transition-all duration-500",
           isActive ? "opacity-100" : "opacity-0",
         )}
       >

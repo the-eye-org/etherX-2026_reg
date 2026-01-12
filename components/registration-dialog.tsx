@@ -154,7 +154,15 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
       setMode("create")
       setOpen(false)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Registration failed")
+      const errorMessage = error instanceof Error ? error.message : "Registration failed"
+      
+      if (errorMessage.includes("Roll number already registered")) {
+        toast.error(`Roll number ${formData.rollNumber.toUpperCase()} is already registered. Please use a different roll number.`)
+      } else if (errorMessage.includes("Phone number already registered")) {
+        toast.error("This phone number is already registered. Please use a different number.")
+      } else {
+        toast.error(errorMessage)
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -163,13 +171,13 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden border border-border/60 bg-card p-0 gap-0">
-        {/* Sticky header */}
-        <div className="sticky top-0 z-10 border-b border-border/60 bg-card/95 backdrop-blur-sm px-6 pt-6 pb-4 space-y-4">
+      <DialogContent className="max-w-full sm:max-w-2xl h-[95vh] sm:h-auto max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-border/60 bg-card p-0 gap-0 rounded-none sm:rounded-lg flex flex-col">
+        {/* Header */}
+        <div className="shrink-0 border-b border-border/60 bg-card/95 backdrop-blur-sm px-4 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4 space-y-3 sm:space-y-4">
           <div className="space-y-1">
-            <h2 className="font-[var(--font-bebas)] text-3xl tracking-tight">Register for EtherX 2026</h2>
-            <p className="font-mono text-xs text-muted-foreground">
-              One submission per teammate. PSG CSE only.
+            <h2 className="font-[var(--font-bebas)] text-2xl sm:text-3xl tracking-tight">Register for EtherX 2026</h2>
+            <p className="font-mono text-[10px] sm:text-xs text-muted-foreground">
+              One submission per teammate. PSG CSE, Msc, ECE and IT  intake only.
             </p>
           </div>
 
@@ -179,7 +187,7 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
               type="button"
               variant={mode === "create" ? "default" : "ghost"}
               size="sm"
-              className="h-9 font-mono text-xs uppercase tracking-widest"
+              className="h-8 sm:h-9 font-mono text-[10px] sm:text-xs uppercase tracking-widest"
               onClick={() => setMode("create")}
             >
               Create
@@ -188,7 +196,7 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
               type="button"
               variant={mode === "join" ? "default" : "ghost"}
               size="sm"
-              className="h-9 font-mono text-xs uppercase tracking-widest"
+              className="h-8 sm:h-9 font-mono text-[10px] sm:text-xs uppercase tracking-widest"
               onClick={() => setMode("join")}
             >
               Join
@@ -197,9 +205,9 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
 
           {/* Inline badges */}
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline" className="font-mono text-[10px]">CSE only</Badge>
-            <Badge variant="secondary" className="font-mono text-[10px]">2–4 members</Badge>
-            <div className="ml-auto flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
+            <Badge variant="outline" className="font-mono text-[9px] sm:text-[10px]">PSG CSE, Msc, ECE and IT  </Badge>
+            <Badge variant="secondary" className="font-mono text-[9px] sm:text-[10px]">2–4 members</Badge>
+            <div className="ml-auto flex items-center gap-2 font-mono text-[9px] sm:text-[10px] text-muted-foreground">
               <span>{availableTeamOptions.length} open</span>
               <span className="h-3 w-px bg-border" />
               <span>{openSlotCount} seats</span>
@@ -208,13 +216,13 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
         </div>
 
         {/* Scrollable body */}
-        <div className="overflow-y-auto overscroll-contain px-6 pb-6">
-          <form onSubmit={handleSubmit} className="space-y-5 pt-4">
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6 pb-6 custom-scrollbar">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 pt-4">
             {/* Personal info */}
-            <div className="space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label htmlFor="name" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                <div className="space-y-1 sm:space-y-1.5">
+                  <Label htmlFor="name" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     Full name *
                   </Label>
                   <Input
@@ -225,11 +233,11 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Your name"
-                    className="h-10"
+                    className="h-9 sm:h-10 text-sm"
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="rollNumber" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <div className="space-y-1 sm:space-y-1.5">
+                  <Label htmlFor="rollNumber" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     Roll number *
                   </Label>
                   <Input
@@ -241,17 +249,17 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                     onChange={handleChange}
                     pattern="^\d{2}[a-zA-Z]\d{3}$"
                     placeholder="23N256"
-                    className="h-10 font-mono"
+                    className="h-9 sm:h-10 font-mono text-sm"
                   />
                   {formData.rollNumber && !rollNumberPattern.test(formData.rollNumber) && (
-                    <p className="font-mono text-[10px] text-destructive">Format: 2 digits + 1 letter + 3 digits</p>
+                    <p className="font-mono text-[9px] sm:text-[10px] text-destructive">Format: 2 digits + 1 letter + 3 digits</p>
                   )}
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label htmlFor="phone" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                <div className="space-y-1 sm:space-y-1.5">
+                  <Label htmlFor="phone" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     Phone *
                   </Label>
                   <Input
@@ -263,11 +271,11 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="WhatsApp number"
-                    className="h-10"
+                    className="h-9 sm:h-10 text-sm"
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="college" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <div className="space-y-1 sm:space-y-1.5">
+                  <Label htmlFor="college" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     College
                   </Label>
                   <Input
@@ -275,18 +283,18 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                     name="college"
                     readOnly
                     value={formData.college}
-                    className="h-10 bg-muted/30"
+                    className="h-9 sm:h-10 bg-muted/30 text-sm"
                   />
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                <div className="space-y-1 sm:space-y-1.5">
+                  <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     Year *
                   </Label>
                   <Select value={formData.year} onValueChange={(value) => setFormData((prev) => ({ ...prev, year: value }))} required>
-                    <SelectTrigger className="h-10">
+                    <SelectTrigger className="h-9 sm:h-10 text-sm">
                       <SelectValue placeholder="Select year" />
                     </SelectTrigger>
                     <SelectContent>
@@ -297,12 +305,12 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <div className="space-y-1 sm:space-y-1.5">
+                  <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     Experience *
                   </Label>
                   <Select value={formData.experience} onValueChange={(value) => setFormData((prev) => ({ ...prev, experience: value }))} required>
-                    <SelectTrigger className="h-10">
+                    <SelectTrigger className="h-9 sm:h-10 text-sm">
                       <SelectValue placeholder="Select level" />
                     </SelectTrigger>
                     <SelectContent>
@@ -320,13 +328,13 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
             <div className="border-t border-border/60" />
 
             {/* Team section */}
-            <div className="space-y-4">
-              <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Team details</p>
+            <div className="space-y-3 sm:space-y-4">
+              <p className="font-mono text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">Team details</p>
               
               {mode === "create" ? (
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="teamName" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <Label htmlFor="teamName" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                       Team name *
                     </Label>
                     <Input
@@ -336,12 +344,12 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                       value={formData.teamName}
                       onChange={handleChange}
                       placeholder="Short identifier"
-                      className="h-10"
+                      className="h-9 sm:h-10 text-sm"
                     />
-                    <p className="font-mono text-[10px] text-muted-foreground">Share exact name with joiners</p>
+                    <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">Share exact name with joiners</p>
                   </div>
-                  <div className="space-y-1.5">
-                    <Label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                       Team size *
                     </Label>
                     <Select
@@ -349,7 +357,7 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                       onValueChange={(value) => setFormData((prev) => ({ ...prev, teamSize: Number(value) || prev.teamSize }))}
                       required
                     >
-                      <SelectTrigger className="h-10">
+                      <SelectTrigger className="h-9 sm:h-10 text-sm">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -361,12 +369,12 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <div className="space-y-1 sm:space-y-1.5">
+                  <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     Select team *
                   </Label>
                   <Select value={selectedTeam} onValueChange={setSelectedTeam} required>
-                    <SelectTrigger className="h-10">
+                    <SelectTrigger className="h-9 sm:h-10 text-sm">
                       <SelectValue placeholder={availableTeamOptions.length ? "Choose team" : "No open teams"} />
                     </SelectTrigger>
                     <SelectContent>
@@ -379,27 +387,27 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                     </SelectContent>
                   </Select>
                   {!availableTeamOptions.length && (
-                    <p className="font-mono text-[10px] text-muted-foreground">No teams available. Create one instead.</p>
+                    <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">No teams available. Create one instead.</p>
                   )}
                 </div>
               )}
             </div>
 
             {/* Actions */}
-            <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
+            <div className="flex flex-col-reverse gap-2 sm:gap-3 pt-2 sm:pt-4 sm:flex-row sm:justify-end">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
                 disabled={isSubmitting}
-                className="h-10 font-mono text-xs uppercase tracking-widest"
+                className="h-9 sm:h-10 font-mono text-xs uppercase tracking-widest"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-10 min-w-[140px] font-mono text-xs uppercase tracking-widest"
+                className="h-9 sm:h-10 min-w-[120px] sm:min-w-[140px] font-mono text-xs uppercase tracking-widest"
               >
                 {isSubmitting ? "Submitting..." : mode === "create" ? "Create team" : "Join team"}
               </Button>

@@ -16,39 +16,39 @@ type Signal = {
 
 const signals: Signal[] = [
   {
-    date: "2026.01.18",
+    date: "2026.01.12",
     title: "Registration Opens",
-    note: "PSG CSE-only intake. One submission per teammate; confirm your callsign before locking in.",
+    note: "PSG CSE, Msc, ECE and IT  intake. One submission per teammate; confirm your callsign before locking in.",
     tag: "Live",
-    status: "Cohort cap in effect",
+    // status: "Cohort cap in effect",
   },
   {
-    date: "2026.01.20",
+    date: "2026.01.18",
     title: "CTF Drops Begin",
-    note: "Nightly portal challenges at 18:00 IST. Accuracy + first-blood bonuses mirror the old Cyber Chxse ruleset.",
+    note: "Nightly portal challenges at 18:00 IST. Accuracy + first-blood bonuses ",
     tag: "Drops",
   },
   {
-    date: "2026.01.24",
+    date: "2026.01.22",
     title: "Leaderboard Lock-In",
     note: "Submission timestamps finalize ranking. Ties break on first-blood and clean writeups.",
     tag: "Cutoff",
     status: "Ship before 23:59 IST",
   },
   {
-    date: "2026.01.28",
+    date: "2026.01.23",
     title: "Workshop Sprint",
     note: "Hands-on labs to rehearse exploit chains, recon, and reporting discipline ahead of on-site play.",
     tag: "Prep",
   },
   {
-    date: "2026.02.01",
+    date: "2026.02.23",
     title: "Vibe Coding",
     note: "Side quest returns. Lightweight creative build with timeboxed constraints and fast demoing.",
     tag: "Side Track",
   },
   {
-    date: "2026.02.05",
+    date: "2026.02.23",
     title: "Final Hackathon",
     note: "Top 10–15 teams meet on-site. Industry-grade briefs, scoring dashboards, and a full-day sprint.",
     tag: "Onsite",
@@ -105,20 +105,20 @@ export function SignalsSection() {
   }, [])
 
   return (
-    <section id="signals" ref={sectionRef} className="relative py-24 px-6 md:px-20 lg:px-32">
-      <div ref={headerRef} className="mx-auto max-w-4xl mb-16 space-y-4">
+    <section id="signals" ref={sectionRef} className="relative py-20 sm:py-24 px-4 sm:px-6 md:px-20 lg:px-32">
+      <div ref={headerRef} className="mx-auto max-w-4xl mb-12 sm:mb-16 space-y-3 sm:space-y-4">
         <div className="flex items-center gap-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">What&apos;s New</span>
+          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">What&apos;s New</span>
           <span className="h-px flex-1 bg-border/40" />
         </div>
-        <div className="flex flex-wrap items-baseline gap-3">
-          <h2 className="font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">Fresh drops</h2>
-          <span className="rounded-full border border-border/60 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
+          <h2 className="font-[var(--font-bebas)] text-3xl sm:text-5xl md:text-7xl tracking-tight">Fresh drops</h2>
+          <span className="rounded-full border border-border/60 px-2 sm:px-3 py-1 font-mono text-[8px] sm:text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             Quick scan
           </span>
         </div>
-        <p className="max-w-2xl font-mono text-sm text-muted-foreground/90 leading-relaxed">
-          Time-ordered updates on dates, drops, and on-site checkpoints. Minimal, mobile-ready.
+        <p className="max-w-2xl font-mono text-xs sm:text-sm text-muted-foreground/90 leading-relaxed">
+          Time-ordered updates on dates, drops, and on-site checkpoints. 
         </p>
       </div>
 
@@ -141,28 +141,28 @@ function SignalCard({
   isLast: boolean
 }) {
   return (
-    <article className={`group relative py-6 ${!isLast ? "border-b border-border/50" : ""} transition-all duration-200 hover:pl-2`}>
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em]">
-          <span className="rounded-md bg-accent/10 px-2.5 py-1 text-accent font-medium">{signal.tag}</span>
-          <span className="h-3 w-px bg-border/70" />
+    <article className={`group relative py-4 sm:py-6 px-3 sm:px-0 ${!isLast ? "border-b border-border/50" : ""} transition-all duration-200 hover:pl-2`}>
+      <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-2 sm:gap-3 mb-2 sm:mb-3">
+        <div className="flex items-center gap-2 font-mono text-[8px] sm:text-[10px] uppercase tracking-[0.25em]">
+          <span className="rounded-md bg-accent/10 px-2 py-0.5 sm:py-1 text-accent font-medium">{signal.tag}</span>
+          <span className="h-3 w-px bg-border/70 hidden sm:block" />
           <time className="text-muted-foreground">{signal.date}</time>
         </div>
-        <span className="font-mono text-[10px] text-muted-foreground/60">#{String(index + 1).padStart(2, "0")}</span>
+        <span className="font-mono text-[8px] sm:text-[10px] text-muted-foreground/60">#{String(index + 1).padStart(2, "0")}</span>
       </div>
 
-      <h3 className="mb-2 font-[var(--font-bebas)] text-3xl md:text-4xl tracking-tight text-foreground group-hover:text-accent transition-colors duration-200">
+      <h3 className="mb-2 font-[var(--font-bebas)] text-xl sm:text-3xl md:text-4xl tracking-tight text-foreground group-hover:text-accent transition-colors duration-200">
         {signal.title}
       </h3>
 
-      <p className="font-mono text-xs text-muted-foreground/90 leading-relaxed max-w-3xl">
+      <p className="font-mono text-[10px] sm:text-xs text-muted-foreground/90 leading-relaxed max-w-3xl">
         {signal.note}
       </p>
 
       {signal.status && (
-        <div className="mt-3 inline-flex items-center gap-2 rounded-md border border-border/60 bg-muted/30 px-3 py-1.5">
+        <div className="mt-2 sm:mt-3 inline-flex items-center gap-2 rounded-md border border-border/60 bg-muted/30 px-2 sm:px-3 py-1 sm:py-1.5">
           <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{signal.status}</span>
+          <span className="font-mono text-[8px] sm:text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{signal.status}</span>
         </div>
       )}
     </article>
