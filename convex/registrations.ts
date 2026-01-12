@@ -1,5 +1,10 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getAuthUserId } from "@convex-dev/auth/server";
+
+// PSG College email pattern
+const PSG_EMAIL_DOMAIN = "psgtech.ac.in";
+const ROLL_NUMBER_PATTERN = /^(\d{2}[a-zA-Z]\d{3})@psgtech\.ac\.in$/i;
 
 export const register = mutation({
   args: {
@@ -13,10 +18,41 @@ export const register = mutation({
     experience: v.string(),
   },
   handler: async (ctx, args) => {
+    // Require authentication
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("You must be logged in to register");
+    }
+
+    // Get user to validate eligibility
+    const user = await ctx.db.get(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const email = user.email || "";
+    const isValidPSGEmail = email.toLowerCase().endsWith(`@${PSG_EMAIL_DOMAIN}`);
+    
+    if (!isValidPSGEmail) {
+      throw new Error("Only PSG Tech students (@psgtech.ac.in) can register");
+    }
+
+    const rollMatch = email.match(ROLL_NUMBER_PATTERN);
+    const extractedRollNumber = rollMatch ? rollMatch[1].toUpperCase() : null;
+    
+    if (!extractedRollNumber) {
+      throw new Error("Invalid PSG email format. Email should be rollnumber@psgtech.ac.in");
+    }
+
+    // Validate that the submitted roll number matches the email
+    if (args.rollNumber.toUpperCase() !== extractedRollNumber) {
+      throw new Error(`Roll number must match your email (${extractedRollNumber})`);
+    }
+
     // Check if roll number already registered
     const existingRoll = await ctx.db
       .query("registrations")
-      .withIndex("by_roll_number", (q) => q.eq("rollNumber", args.rollNumber))
+      .withIndex("by_roll_number", (q) => q.eq("rollNumber", args.rollNumber.toUpperCase()))
       .first();
     
     if (existingRoll) {
@@ -51,6 +87,8 @@ export const register = mutation({
 
     const registrationId = await ctx.db.insert("registrations", {
       ...args,
+      rollNumber: args.rollNumber.toUpperCase(),
+      userId,
       registeredAt: Date.now(),
       attended: false,
     });

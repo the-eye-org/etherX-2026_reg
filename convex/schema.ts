@@ -12,12 +12,14 @@ const applicationTables = {
     teamName: v.optional(v.string()),
     teamSize: v.number(),
     experience: v.string(),
+    userId: v.optional(v.id("users")),
     registeredAt: v.number(),
     attended: v.optional(v.boolean()),
   })
     .index("by_roll_number", ["rollNumber"])
     .index("by_phone", ["phone"])
-    .index("by_team_name", ["teamName"]),
+    .index("by_team_name", ["teamName"])
+    .index("by_user_id", ["userId"]),
 };
 
 export default defineSchema({
