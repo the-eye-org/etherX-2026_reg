@@ -93,8 +93,8 @@ export function PrinciplesSection() {
     <section ref={sectionRef} id="principles" className="relative py-20 sm:py-32 px-4 sm:px-6 md:pl-28 md:pr-12">
       {/* Section header */}
       <div ref={headerRef} className="mb-16 sm:mb-24">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">03 / Principles</span>
-        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">HOW WE WORK</h2>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">03 / Guidelines</span>
+        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">Principles</h2>
       </div>
 
       {/* Staggered principles */}

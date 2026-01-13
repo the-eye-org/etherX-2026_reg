@@ -136,3 +136,33 @@
   background: oklch(0.7 0.2 45);
   color: oklch(0.08 0 0);
 }
+
+
+/* Hide scrollbar utility */
+
+
+@layer utilities {
+
+
+  .scrollbar-hide {
+
+
+    -ms-overflow-style: none;
+
+
+    scrollbar-width: none;
+
+
+  }
+
+
+  .scrollbar-hide::-webkit-scrollbar {
+
+
+    display: none;
+
+
+  }
+
+
+}

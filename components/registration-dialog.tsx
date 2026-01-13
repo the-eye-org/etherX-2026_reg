@@ -60,10 +60,12 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
   const profile = useQuery(api.auth.currentUserProfile)
   const eligibility = useQuery(api.auth.checkEligibility)
   const availableTeams = useQuery(api.registrations.getTeams)
+  const userRegistration = useQuery(api.registrations.getUserRegistration)
   const register = useMutation(api.registrations.register)
 
   const isLoggedIn = eligibility?.isLoggedIn ?? false
   const isEligible = eligibility?.isEligible ?? false
+  const isAlreadyRegistered = userRegistration !== null
 
   // Prevent body scroll when dialog is open
   useEffect(() => {
@@ -338,200 +340,297 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
 
         {/* Scrollable body - only show form if logged in and eligible */}
         {isLoggedIn && isEligible ? (
-          <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6 pb-6">
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 pt-4">
-              {/* Personal info */}
-              <div className="space-y-3 sm:space-y-4">
-                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                  <div className="space-y-1 sm:space-y-1.5">
-                    <Label htmlFor="name" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Full name *
-                    </Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      autoComplete="name"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Your name"
-                      className="h-9 sm:h-10 text-sm"
-                    />
+          <>
+            {isAlreadyRegistered ? (
+              // Show already registered status
+              <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6 py-6">
+                <div className="space-y-6">
+                  {/* Success message */}
+                  <div className="flex items-start gap-3 p-4 rounded-md border border-accent/30 bg-accent/5">
+                    <svg className="w-6 h-6 text-accent shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <p className="font-mono text-sm font-semibold text-accent">Registration confirmed</p>
+                      <p className="font-mono text-xs text-muted-foreground mt-1">You're all set for EtherX 2026!</p>
+                    </div>
                   </div>
-                  <div className="space-y-1 sm:space-y-1.5">
-                    <Label htmlFor="rollNumber" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Roll number *
-                    </Label>
-                    <Input
-                      id="rollNumber"
-                      name="rollNumber"
-                      autoComplete="off"
-                      required
-                      readOnly
-                      value={formData.rollNumber}
-                      className="h-9 sm:h-10 font-mono text-sm bg-muted/30"
-                    />
-                    <p className="font-mono text-[9px] text-muted-foreground">Auto-filled from your email</p>
-                  </div>
-                </div>
 
-                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                  <div className="space-y-1 sm:space-y-1.5">
-                    <Label htmlFor="phone" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Phone *
-                    </Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      autoComplete="tel"
-                      required
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="WhatsApp number"
-                      className="h-9 sm:h-10 text-sm"
-                    />
-                  </div>
-                  <div className="space-y-1 sm:space-y-1.5">
-                    <Label htmlFor="college" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      College
-                    </Label>
-                    <Input
-                      id="college"
-                      name="college"
-                      readOnly
-                      value={formData.college}
-                      className="h-9 sm:h-10 bg-muted/30 text-sm"
-                    />
-                  </div>
-                </div>
+                  {/* Registration details */}
+                  <div className="space-y-4 border-t border-border/60 pt-6">
+                    <p className="font-mono text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">Your registration</p>
+                    
+                    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">Name</label>
+                        <div className="h-9 sm:h-10 px-3 rounded-md border border-border/60 bg-muted/10 flex items-center">
+                          <p className="font-mono text-sm">{userRegistration?.name}</p>
+                        </div>
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">Roll number</label>
+                        <div className="h-9 sm:h-10 px-3 rounded-md border border-border/60 bg-muted/10 flex items-center">
+                          <p className="font-mono text-sm">{userRegistration?.rollNumber}</p>
+                        </div>
+                      </div>
+                    </div>
 
-                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                  <div className="space-y-1 sm:space-y-1.5">
-                    <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Year *
-                    </Label>
-                    <Select value={formData.year} onValueChange={(value) => setFormData((prev) => ({ ...prev, year: value }))} required>
-                      <SelectTrigger className="h-9 sm:h-10 text-sm">
-                        <SelectValue placeholder="Select year" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1st">1st year</SelectItem>
-                        <SelectItem value="2nd">2nd year</SelectItem>
-                        <SelectItem value="3rd">3rd year</SelectItem>
-                        <SelectItem value="4th">4th year</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">Phone</label>
+                        <div className="h-9 sm:h-10 px-3 rounded-md border border-border/60 bg-muted/10 flex items-center">
+                          <p className="font-mono text-sm">{userRegistration?.phone}</p>
+                        </div>
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">Year</label>
+                        <div className="h-9 sm:h-10 px-3 rounded-md border border-border/60 bg-muted/10 flex items-center">
+                          <p className="font-mono text-sm capitalize">{userRegistration?.year}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">Team</label>
+                      <div className="h-9 sm:h-10 px-3 rounded-md border border-border/60 bg-muted/10 flex items-center">
+                        <p className="font-mono text-sm">{userRegistration?.teamName || "–"}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">Experience</label>
+                      <div className="h-9 sm:h-10 px-3 rounded-md border border-border/60 bg-muted/10 flex items-center">
+                        <p className="font-mono text-sm capitalize">{userRegistration?.experience}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="space-y-1 sm:space-y-1.5">
-                    <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Experience *
-                    </Label>
-                    <Select value={formData.experience} onValueChange={(value) => setFormData((prev) => ({ ...prev, experience: value }))} required>
-                      <SelectTrigger className="h-9 sm:h-10 text-sm">
-                        <SelectValue placeholder="Select level" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="beginner">Beginner</SelectItem>
-                        <SelectItem value="intermediate">Intermediate</SelectItem>
-                        <SelectItem value="advanced">Advanced</SelectItem>
-                        <SelectItem value="expert">Expert</SelectItem>
-                      </SelectContent>
-                    </Select>
+
+                  {/* Registered date */}
+                  <div className="pt-4 border-t border-border/60">
+                    <p className="font-mono text-[9px] text-muted-foreground">
+                      Registered {new Date(userRegistration?.registeredAt || 0).toLocaleDateString()} at {new Date(userRegistration?.registeredAt || 0).toLocaleTimeString()}
+                    </p>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-col-reverse gap-2 sm:gap-3 pt-2 sm:pt-4 sm:flex-row sm:justify-between">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setOpen(false)}
+                      className="h-9 sm:h-10 font-mono text-xs uppercase tracking-widest"
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={handleSignOut}
+                      className="h-9 sm:h-10 font-mono text-xs uppercase tracking-widest text-destructive hover:text-destructive"
+                    >
+                      Sign out
+                    </Button>
                   </div>
                 </div>
               </div>
-
-              {/* Divider */}
-              <div className="border-t border-border/60" />
-
-              {/* Team section */}
-              <div className="space-y-3 sm:space-y-4">
-                <p className="font-mono text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">Team details</p>
-                
-                {mode === "create" ? (
-                  <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                    <div className="space-y-1 sm:space-y-1.5">
-                      <Label htmlFor="teamName" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                        Team name *
-                      </Label>
-                      <Input
-                        id="teamName"
-                        name="teamName"
-                        required
-                        value={formData.teamName}
-                        onChange={handleChange}
-                        placeholder="Short identifier"
-                        className="h-9 sm:h-10 text-sm"
-                      />
-                      <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">Share exact name with joiners</p>
+            ) : (
+              // Show registration form
+              <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6 pb-6">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 pt-4">
+                  {/* Personal info */}
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <Label htmlFor="name" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                          Full name *
+                        </Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          autoComplete="name"
+                          required
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="Your name"
+                          className="h-9 sm:h-10 text-sm"
+                        />
+                      </div>
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <Label htmlFor="rollNumber" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                          Roll number *
+                        </Label>
+                        <Input
+                          id="rollNumber"
+                          name="rollNumber"
+                          autoComplete="off"
+                          required
+                          readOnly
+                          value={formData.rollNumber}
+                          className="h-9 sm:h-10 font-mono text-sm bg-muted/30"
+                        />
+                        <p className="font-mono text-[9px] text-muted-foreground">Auto-filled from your email</p>
+                      </div>
                     </div>
-                    <div className="space-y-1 sm:space-y-1.5">
-                      <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                        Team size *
-                      </Label>
-                      <Select
-                        value={String(formData.teamSize)}
-                        onValueChange={(value) => setFormData((prev) => ({ ...prev, teamSize: Number(value) || prev.teamSize }))}
-                        required
-                      >
-                        <SelectTrigger className="h-9 sm:h-10 text-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="2">2 members</SelectItem>
-                          <SelectItem value="3">3 members</SelectItem>
-                          <SelectItem value="4">4 members</SelectItem>
-                        </SelectContent>
-                      </Select>
+
+                    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <Label htmlFor="phone" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                          Phone *
+                        </Label>
+                        <Input
+                          id="phone"
+                          name="phone"
+                          type="tel"
+                          autoComplete="tel"
+                          required
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="WhatsApp number"
+                          className="h-9 sm:h-10 text-sm"
+                        />
+                      </div>
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <Label htmlFor="college" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                          College
+                        </Label>
+                        <Input
+                          id="college"
+                          name="college"
+                          readOnly
+                          value={formData.college}
+                          className="h-9 sm:h-10 bg-muted/30 text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                          Year *
+                        </Label>
+                        <Select value={formData.year} onValueChange={(value) => setFormData((prev) => ({ ...prev, year: value }))} required>
+                          <SelectTrigger className="h-9 sm:h-10 text-sm">
+                            <SelectValue placeholder="Select year" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1st">1st year</SelectItem>
+                            <SelectItem value="2nd">2nd year</SelectItem>
+                            <SelectItem value="3rd">3rd year</SelectItem>
+                            <SelectItem value="4th">4th year</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                          Experience *
+                        </Label>
+                        <Select value={formData.experience} onValueChange={(value) => setFormData((prev) => ({ ...prev, experience: value }))} required>
+                          <SelectTrigger className="h-9 sm:h-10 text-sm">
+                            <SelectValue placeholder="Select level" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="beginner">Beginner</SelectItem>
+                            <SelectItem value="intermediate">Intermediate</SelectItem>
+                            <SelectItem value="advanced">Advanced</SelectItem>
+                            <SelectItem value="expert">Expert</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </div>
-                ) : (
-                  <div className="space-y-1 sm:space-y-1.5">
-                    <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                      Select team *
-                    </Label>
-                    <Select value={selectedTeam} onValueChange={setSelectedTeam} required>
-                      <SelectTrigger className="h-9 sm:h-10 text-sm">
-                        <SelectValue placeholder={availableTeamOptions.length ? "Choose team" : "No open teams"} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {availableTeamOptions.map((team) => (
-                          <SelectItem key={team.teamName} value={team.teamName}>
-                            <span className="font-mono">{team.teamName}</span>
-                            <span className="ml-2 text-muted-foreground">({team.memberCount}/{team.teamSize})</span>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {!availableTeamOptions.length && (
-                      <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">No teams available. Create one instead.</p>
+
+                  {/* Divider */}
+                  <div className="border-t border-border/60" />
+
+                  {/* Team section */}
+                  <div className="space-y-3 sm:space-y-4">
+                    <p className="font-mono text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">Team details</p>
+                    
+                    {mode === "create" ? (
+                      <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <Label htmlFor="teamName" className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                            Team name *
+                          </Label>
+                          <Input
+                            id="teamName"
+                            name="teamName"
+                            required
+                            value={formData.teamName}
+                            onChange={handleChange}
+                            placeholder="Short identifier"
+                            className="h-9 sm:h-10 text-sm"
+                          />
+                          <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">Share exact name with joiners</p>
+                        </div>
+                        <div className="space-y-1 sm:space-y-1.5">
+                          <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                            Team size *
+                          </Label>
+                          <Select
+                            value={String(formData.teamSize)}
+                            onValueChange={(value) => setFormData((prev) => ({ ...prev, teamSize: Number(value) || prev.teamSize }))}
+                            required
+                          >
+                            <SelectTrigger className="h-9 sm:h-10 text-sm">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="2">2 members</SelectItem>
+                              <SelectItem value="3">3 members</SelectItem>
+                              <SelectItem value="4">4 members</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-1 sm:space-y-1.5">
+                        <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                          Select team *
+                        </Label>
+                        <Select value={selectedTeam} onValueChange={setSelectedTeam} required>
+                          <SelectTrigger className="h-9 sm:h-10 text-sm">
+                            <SelectValue placeholder={availableTeamOptions.length ? "Choose team" : "No open teams"} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableTeamOptions.map((team) => (
+                              <SelectItem key={team.teamName} value={team.teamName}>
+                                <span className="font-mono">{team.teamName}</span>
+                                <span className="ml-2 text-muted-foreground">({team.memberCount}/{team.teamSize})</span>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {!availableTeamOptions.length && (
+                          <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">No teams available. Create one instead.</p>
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
-              </div>
 
-              {/* Actions */}
-              <div className="flex flex-col-reverse gap-2 sm:gap-3 pt-2 sm:pt-4 sm:flex-row sm:justify-end">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setOpen(false)}
-                  disabled={isSubmitting}
-                  className="h-9 sm:h-10 font-mono text-xs uppercase tracking-widest"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="h-9 sm:h-10 min-w-[120px] sm:min-w-[140px] font-mono text-xs uppercase tracking-widest"
-                >
-                  {isSubmitting ? "Submitting..." : mode === "create" ? "Create team" : "Join team"}
-                </Button>
+                  {/* Actions */}
+                  <div className="flex flex-col-reverse gap-2 sm:gap-3 pt-2 sm:pt-4 sm:flex-row sm:justify-end">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setOpen(false)}
+                      disabled={isSubmitting}
+                      className="h-9 sm:h-10 font-mono text-xs uppercase tracking-widest"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="h-9 sm:h-10 min-w-[120px] sm:min-w-[140px] font-mono text-xs uppercase tracking-widest"
+                    >
+                      {isSubmitting ? "Submitting..." : mode === "create" ? "Create team" : "Join team"}
+                    </Button>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
+            )}
+          </>
         ) : (
           <div className="flex-1 flex items-center justify-center p-8">
             <div className="text-center space-y-4">

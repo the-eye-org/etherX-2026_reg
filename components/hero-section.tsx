@@ -49,6 +49,12 @@ export function HeroSection() {
       <div ref={contentRef} className="flex-1 w-full sm:pl-0">
         <SplitFlapAudioProvider>
           <div className="relative">
+            {/* Presenter text */}
+            <div className="mb-2 sm:mb-3">
+              <span className="font-mono text-[20px] sm:text-s uppercase tracking-[0.3em] text-accent">
+                THE EYE Presents,
+              </span>
+            </div>
             <SplitFlapText text="ETHERX 26" speed={80} />
             <div className="mt-4">
               <SplitFlapMuteToggle />
@@ -56,13 +62,13 @@ export function HeroSection() {
           </div>
         </SplitFlapAudioProvider>
 
-        <h2 className="font-[var(--font-bebas)] text-muted-foreground/60 text-[clamp(0.875rem,2vw,2rem)] mt-4 tracking-wide">
+        <h2 className="font-[var(--font-bebas)] text-accent/80 text-[clamp(0.875rem,2vw,2rem)] mt-4 tracking-wide">
           Flagship multi-stage security challenge
         </h2>
 
         <p className="mt-6 sm:mt-12 max-w-sm sm:max-w-md font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed">
           Daily remote CTF drops on our portal. Fastest solves rise on the leaderboard. Finalists meet on-site for an
-          industry-grade hackathon with full documentation packs and side quests.
+          industry-grade hackathon with full documentation packs, plus side quests like vibe coding and workshops.
         </p>
 
         <div className="mt-10 sm:mt-16 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
@@ -86,12 +92,15 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Floating info tag */}
-      {/* <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12">
-        <div className="border border-border px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          v.01 / Experimental Build
+      {/* Bottom right info - Desktop only */}
+      <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12 hidden md:block">
+        <div className="border border-border/40 px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground hover:border-accent hover:text-accent transition-all duration-300">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+            <span>2026 Edition</span>
+          </div>
         </div>
-      </div> */}
+      </div>
     </section>
   )
 }

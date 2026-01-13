@@ -146,3 +146,36 @@ export const getTeams = query({
     return Array.from(teamsMap.values()).filter(team => team.memberCount < team.teamSize);
   },
 });
+
+export const getUserRegistration = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      return null;
+    }
+
+    // Find if user has any registration
+    const registration = await ctx.db
+      .query("registrations")
+      .withIndex("by_user_id", (q) => q.eq("userId", userId))
+      .first();
+
+    if (!registration) {
+      return null;
+    }
+
+    return {
+      id: registration._id,
+      name: registration.name,
+      rollNumber: registration.rollNumber,
+      phone: registration.phone,
+      college: registration.college,
+      year: registration.year,
+      teamName: registration.teamName,
+      teamSize: registration.teamSize,
+      experience: registration.experience,
+      registeredAt: registration.registeredAt,
+    };
+  },
+});
