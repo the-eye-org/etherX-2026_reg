@@ -47,7 +47,7 @@ const initialForm: FormState = {
   experience: "beginner",
 }
 
-const rollNumberPattern = /^\d{2}[a-zA-Z]\d{3}$/
+const rollNumberPattern = /^\d{2}[a-zA-Z]{1,2}\d{2,3}$/
 
 export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
   const [open, setOpen] = useState(false)
