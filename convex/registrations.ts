@@ -178,3 +178,30 @@ export const getUserRegistration = query({
     };
   },
 });
+
+// Get all members of a team by team name
+export const getTeamMembers = query({
+  args: {
+    teamName: v.string(),
+  },
+  handler: async (ctx, args) => {
+    if (!args.teamName) {
+      return [];
+    }
+
+    const members = await ctx.db
+      .query("registrations")
+      .withIndex("by_team_name", (q) => q.eq("teamName", args.teamName))
+      .collect();
+
+    return members.map(member => ({
+      id: member._id,
+      name: member.name,
+      rollNumber: member.rollNumber,
+      phone: member.phone,
+      year: member.year,
+      experience: member.experience,
+      registeredAt: member.registeredAt,
+    }));
+  },
+});

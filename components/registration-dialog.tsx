@@ -62,6 +62,10 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
   const eligibility = useQuery(api.auth.checkEligibility)
   const availableTeams = useQuery(api.registrations.getTeams)
   const userRegistration = useQuery(api.registrations.getUserRegistration)
+  const teamMembers = useQuery(
+    api.registrations.getTeamMembers,
+    userRegistration?.teamName ? { teamName: userRegistration.teamName } : "skip"
+  )
   const register = useMutation(api.registrations.register)
 
   const isLoggedIn = eligibility?.isLoggedIn ?? false
@@ -398,6 +402,44 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                         <p className="font-mono text-sm">{userRegistration?.teamName || "–"}</p>
                       </div>
                     </div>
+
+                    {/* Team Members Section */}
+                    {userRegistration?.teamName && teamMembers && teamMembers.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                            Team Members
+                          </label>
+                          <Badge variant="secondary" className="font-mono text-[9px]">
+                            {teamMembers.length}/{userRegistration.teamSize}
+                          </Badge>
+                        </div>
+                        <div className="rounded-md border border-border/60 bg-muted/10 divide-y divide-border/60">
+                          {teamMembers.map((member, index) => (
+                            <div key={member.id} className="p-3 space-y-1">
+                              <div className="flex items-center justify-between">
+                                <p className="font-mono text-sm font-medium">{member.name}</p>
+                                {member.rollNumber === userRegistration?.rollNumber && (
+                                  <Badge variant="outline" className="font-mono text-[8px]">You</Badge>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-3 text-[10px] font-mono text-muted-foreground">
+                                <span>{member.rollNumber}</span>
+                                <span>•</span>
+                                <span className="capitalize">{member.year}</span>
+                                <span>•</span>
+                                <span className="capitalize">{member.experience}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        {teamMembers.length < (userRegistration.teamSize || 0) && (
+                          <p className="font-mono text-[9px] text-muted-foreground">
+                            Waiting for {(userRegistration.teamSize || 0) - teamMembers.length} more member(s) to join
+                          </p>
+                        )}
+                      </div>
+                    )}
 
                     <div className="space-y-1.5">
                       <label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">Experience</label>
