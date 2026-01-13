@@ -34,7 +34,6 @@ export default function AdminPage() {
     setAttemptLogin(false);
     if (verifyResult.isValid) {
       setIsAuthenticated(true);
-      sessionStorage.setItem("adminAuth", "true");
       setError("");
     } else {
       setError("Invalid username or password");
@@ -49,7 +48,6 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem("adminAuth");
     setUsername("");
     setPassword("");
   };
@@ -104,14 +102,6 @@ export default function AdminPage() {
     a.download = `registrations_${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
   };
-
-  // Check session storage on mount
-  useState(() => {
-    const auth = sessionStorage.getItem("adminAuth");
-    if (auth === "true") {
-      setIsAuthenticated(true);
-    }
-  });
 
   if (!isAuthenticated) {
     return (
