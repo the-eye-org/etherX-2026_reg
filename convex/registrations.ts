@@ -4,8 +4,7 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 
 // PSG College email pattern
 const PSG_EMAIL_DOMAIN = "psgtech.ac.in";
-const ROLL_NUMBER_PATTERN = /^(\d{2}[a-zA-Z]\d{3})@psgtech\.ac\.in$/i;
-
+const ROLL_NUMBER_PATTERN = /^(\d{2}[a-zA-Z]{1,2}\d{3})@psgtech\.ac\.in$/i;
 export const register = mutation({
   args: {
     name: v.string(),
