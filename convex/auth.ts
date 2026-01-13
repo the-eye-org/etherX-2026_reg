@@ -4,7 +4,7 @@ import { query } from "./_generated/server";
 
 // PSG College email pattern: rollnumber@psgtech.ac.in
 const PSG_EMAIL_DOMAIN = "psgtech.ac.in";
-const ROLL_NUMBER_PATTERN = /^(\d{2}[a-zA-Z]\d{3})@psgtech\.ac\.in$/i;
+const ROLL_NUMBER_PATTERN = /^(\d{2}[a-zA-Z]{1,2}\d{2,3})@psgtech\.ac\.in$/i;
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
   providers: [Google],
