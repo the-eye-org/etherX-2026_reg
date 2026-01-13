@@ -4,6 +4,7 @@ import { type ChangeEvent, type FormEvent, type ReactNode, useEffect, useMemo, u
 import { useMutation, useQuery } from "convex/react"
 import { useAuthActions } from "@convex-dev/auth/react"
 import { toast } from "sonner"
+import { cn } from "@/lib/utils"
 import { api } from "@/convex/_generated/api"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -52,6 +53,7 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState<RegistrationMode>("create")
   const [selectedTeam, setSelectedTeam] = useState("")
+  const [teamSearchQuery, setTeamSearchQuery] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [formData, setFormData] = useState<FormState>(initialForm)
@@ -105,6 +107,13 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
       ),
     [availableTeamOptions],
   )
+
+  const filteredTeams = useMemo(() => {
+    if (!teamSearchQuery.trim()) return availableTeamOptions
+    return availableTeamOptions.filter((team) =>
+      team.teamName.toLowerCase().includes(teamSearchQuery.toLowerCase())
+    )
+  }, [availableTeamOptions, teamSearchQuery])
 
   useEffect(() => {
     if (mode !== "join") return
@@ -343,7 +352,7 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
           <>
             {isAlreadyRegistered ? (
               // Show already registered status
-              <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6 py-6">
+              <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 min-h-0">
                 <div className="space-y-6">
                   {/* Success message */}
                   <div className="flex items-start gap-3 p-4 rounded-md border border-accent/30 bg-accent/5">
@@ -435,7 +444,7 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
               </div>
             ) : (
               // Show registration form
-              <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6 pb-6">
+              <div className="flex-1 overflow-y-auto px-4 sm:px-6 pb-6 min-h-0">
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 pt-4">
                   {/* Personal info */}
                   <div className="space-y-3 sm:space-y-4">
@@ -586,23 +595,58 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                     ) : (
                       <div className="space-y-1 sm:space-y-1.5">
                         <Label className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                          Select team *
+                          Search teams *
                         </Label>
-                        <Select value={selectedTeam} onValueChange={setSelectedTeam} required>
-                          <SelectTrigger className="h-9 sm:h-10 text-sm">
-                            <SelectValue placeholder={availableTeamOptions.length ? "Choose team" : "No open teams"} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {availableTeamOptions.map((team) => (
-                              <SelectItem key={team.teamName} value={team.teamName}>
-                                <span className="font-mono">{team.teamName}</span>
-                                <span className="ml-2 text-muted-foreground">({team.memberCount}/{team.teamSize})</span>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {!availableTeamOptions.length && (
-                          <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">No teams available. Create one instead.</p>
+                        <Input
+                          type="text"
+                          placeholder="Search by team name..."
+                          value={teamSearchQuery}
+                          onChange={(e) => setTeamSearchQuery(e.target.value)}
+                          className="h-9 sm:h-10 text-sm"
+                        />
+                        {availableTeamOptions.length > 0 ? (
+                          <div className="mt-2 space-y-1.5 max-h-48 overflow-y-auto border border-border/60 rounded-md bg-muted/20 p-2">
+                            {filteredTeams.length > 0 ? (
+                              filteredTeams.map((team) => (
+                                <button
+                                  key={team.teamName}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedTeam(team.teamName)
+                                    setTeamSearchQuery("")
+                                  }}
+                                  className={cn(
+                                    "w-full text-left px-3 py-2 rounded-md transition-colors text-sm font-mono",
+                                    selectedTeam === team.teamName
+                                      ? "bg-accent text-accent-foreground"
+                                      : "bg-transparent hover:bg-muted/40"
+                                  )}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span>{team.teamName}</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {team.memberCount}/{team.teamSize}
+                                    </span>
+                                  </div>
+                                </button>
+                              ))
+                            ) : (
+                              <p className="px-3 py-2 font-mono text-[10px] text-muted-foreground">
+                                No teams match your search
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground mt-2">
+                            No teams available. Create one instead.
+                          </p>
+                        )}
+                        {selectedTeam && (
+                          <div className="mt-2 p-2 rounded-md border border-accent/30 bg-accent/5">
+                            <p className="font-mono text-xs text-accent">
+                              Selected: <span className="font-semibold">{selectedTeam}</span>
+                            </p>
+                          </div>
                         )}
                       </div>
                     )}
