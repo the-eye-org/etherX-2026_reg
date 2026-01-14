@@ -39,13 +39,13 @@ const signals: Signal[] = [
     status: "Ship before 23:59 IST",
   },
   {
-    date: "2026.02.23",
+    date: "2026.01.23",
     title: "Vibe Coding",
     note: "Non-Technical build challenge. Fun coding sprint with constraints and live demos.",
     tag: "Non-Tech Event",
   },
   {
-    date: "2026.02.23",
+    date: "2026.01.23",
     title: "Hackathon",
     note: "Top 10–15 teams meet on-site. Industry-grade briefs, scoring dashboards, and a full-day sprint.",
     tag: "Onsite",

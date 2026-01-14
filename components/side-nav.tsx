@@ -10,7 +10,7 @@ import { toast } from "sonner"
 
 const navItems = [
   { id: "hero", label: "Index" },
-  { id: "signals", label: "Signals" },
+  { id: "signals", label: "Events" },
   { id: "work", label: "Experiments" },
   { id: "principles", label: "Principles" },
   { id: "colophon", label: "Colophon" },

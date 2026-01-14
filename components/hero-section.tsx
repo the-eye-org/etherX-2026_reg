@@ -90,6 +90,14 @@ export function HeroSection() {
             Format & Updates
           </a>
         </div>
+
+        <button
+          type="button"
+          className="mt-6 inline-flex items-center gap-3 rounded-full border border-accent/40 bg-accent/5 px-4 py-2 font-mono text-[9px] sm:text-[11px] uppercase tracking-[0.28em] text-accent transition-all duration-300 hover:border-accent/70 hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-95 active:bg-accent/15"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" aria-hidden="true" />
+          <span>10K Prize Pool · 5K Tech · 5K Non-Tech</span>
+        </button>
       </div>
 
       {/* Bottom right info - Desktop only */}
