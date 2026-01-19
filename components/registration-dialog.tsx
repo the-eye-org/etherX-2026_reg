@@ -359,6 +359,16 @@ export function RegistrationDialog({ trigger }: { trigger: ReactNode }) {
                     <div>
                       <p className="font-mono text-sm font-semibold text-accent">Registration confirmed</p>
                       <p className="font-mono text-xs text-muted-foreground mt-1">You're all set for EtherX 2026!</p>
+                      <p className="font-mono text-xs text-muted-foreground mt-3">
+                        Join our WhatsApp group: <a 
+                          href=" https://chat.whatsapp.com/Lx2sXs13GK516CfATBAYiL" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-accent hover:text-accent/80 underline underline-offset-2 transition-colors font-medium"
+                        >
+                          Click here
+                        </a>
+                      </p>
                     </div>
                   </div>
 
