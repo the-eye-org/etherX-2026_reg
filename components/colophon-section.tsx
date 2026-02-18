@@ -75,18 +75,18 @@ export function ColophonSection() {
     >
       {/* Section header */}
       <div ref={headerRef} className="mb-12 sm:mb-16">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">04 / Colophon</span>
-        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">CREDITS</h2>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">04 / Summary</span>
+        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">EVENT SNAPSHOT</h2>
       </div>
 
       {/* Multi-column layout */}
       <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 md:gap-12">
         {/* Design */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Program</h4>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Event</h4>
           <ul className="space-y-1 sm:space-y-2">
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">EtherX Flagship</li>
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">CTF + Hackathon</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">International Cybersecurity Hackathon</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">24-Hour Online Hackathon</li>
           </ul>
         </div>
 
@@ -102,20 +102,32 @@ export function ColophonSection() {
 
         {/* Typography */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Tracks</h4>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Hosts</h4>
           <ul className="space-y-1 sm:space-y-2">
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Daily CTF</li>
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Final Hackathon</li>
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Vibe Coding</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">PSG College of Technology</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">NYU Osiris Lab</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">New York University, USA</li>
           </ul>
         </div>
 
         {/* Location */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Location</h4>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Schedule</h4>
           <ul className="space-y-1 sm:space-y-2">
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">CTF: Remote</li>
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Finals: Onsite</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Feb 28, 7:00 PM IST</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Mar 1, 7:00 PM IST</li>
+          </ul>
+        </div>
+
+        
+
+        {/* capacity */}
+        <div className="col-span-1 hidden sm:block">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Capacity</h4>
+          <ul className="space-y-1 sm:space-y-2">
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Max 200 participants</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Max 50 teams</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Team size: 3–5</li>
           </ul>
         </div>
 
@@ -123,31 +135,8 @@ export function ColophonSection() {
         <div className="col-span-1">
           <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Contact</h4>
           <ul className="space-y-1 sm:space-y-2">
-            <li>
-              <a
-                href="mailto:theeye@psgtech.ac.in"
-                className="font-mono text-[10px] sm:text-xs text-foreground/80 hover:text-accent transition-colors duration-200"
-              >
-                Email
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="font-mono text-[10px] sm:text-xs text-foreground/80 hover:text-accent transition-colors duration-200"
-              >
-                Updates Feed
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        {/* Year */}
-        <div className="col-span-1 hidden sm:block">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Year</h4>
-          <ul className="space-y-1 sm:space-y-2">
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">2026</li>
-            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Flagship Cohort</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Neelesh — +91 XXXXX XXXXX</li>
+            <li className="font-mono text-[10px] sm:text-xs text-foreground/80">Thrisha — +91 XXXXX XXXXX</li>
           </ul>
         </div>
       </div>
@@ -158,9 +147,9 @@ export function ColophonSection() {
         className="mt-16 sm:mt-24 pt-6 sm:pt-8 border-t border-border/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4"
       >
         <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest">
-          © 2026 The-EYE. All rights reserved.
+          © 2026 International Cybersecurity Hackathon
         </p>
-        <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">Designed with intention. Built with precision.</p>
+        <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">PSG College of Technology × NYU Osiris Lab</p>
       </div>
     </section>
   )

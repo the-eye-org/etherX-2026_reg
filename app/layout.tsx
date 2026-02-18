@@ -20,9 +20,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-bebas" })
 
 export const metadata: Metadata = {
-  title: "EtherX-2026",
+  title: "International Cybersecurity Hackathon",
   description:
-    "Interface studies in controlled environments. We design systems that behave, not just screens that display.",
+    "PSG College of Technology × NYU Osiris Lab · 24-hour online hackathon focused on cybersecurity and secure software development.",
   generator: "v0.app",
   icons: {
     icon: [

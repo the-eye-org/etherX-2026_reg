@@ -9,28 +9,29 @@ gsap.registerPlugin(ScrollTrigger)
 
 const experiments = [
   {
-    title: "Daily CTF Drops",
-    medium: "Remote Play",
-    description: "Solve portal challenges nightly. Speed and accuracy set your rank.",
+    title: "Security Domains",
+    medium: "Domains",
+    description: "Architect resilient systems, secure cloud workflows, and integrate security into delivery pipelines.",
+    domains: ["Secure Software Design", "Cloud Security", "DevSecOps Fundamentals"],
     span: "col-span-2 row-span-2",
   },
   {
-    title: "Leaderboard Engine",
-    medium: "Scoring",
-    description: "Timestamp-first scoring, first-blood bonuses, and anti-cheat checks.",
+    title: "Web & API Security",
+    medium: "Domain",
+    description: "Identify and mitigate web and API attack surfaces.",
     span: "col-span-1 row-span-1",
   },
  
   {
-    title: "Vibe Coding",
-    medium: "Side Event",
-    description: "A playful non-tech prompt to ship something delightful under constraints.",
+    title: "Cryptography",
+    medium: "Domain",
+    description: "Apply cryptographic concepts to practical security tasks.",
     span: "col-span-1 row-span-1",
   },
   {
-    title: "Final Hackathon",
-    medium: "Onsite",
-    description: "Top teams build against industry-style docs and present shippable solutions.",
+    title: "Secure Coding",
+    medium: "Domain",
+    description: "Build with secure-first coding practices.",
     span: "col-span-2 row-span-1",
   },
   
@@ -111,18 +112,18 @@ export function WorkSection() {
       {/* Section header */}
       <div ref={headerRef} className="mb-16 flex items-end justify-between">
         <div>
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">02 / Experiments</span>
-          <h2 className="mt-4 font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">SELECTED WORK</h2>
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">02 / Domains</span>
+          <h2 className="mt-4 font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">FOCUS AREAS</h2>
         </div>
         <p className="hidden md:block max-w-xs font-mono text-xs text-muted-foreground text-right leading-relaxed">
-          Studies across interface design, agent systems, and visual computation.
+          Cybersecurity and secure software development tracks.
         </p>
       </div>
 
       {/* Asymmetric grid */}
       <div
         ref={gridRef}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[240px] md:auto-rows-[200px]"
+        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[200px]"
       >
         {experiments.map((experiment, index) => (
           <WorkCard key={index} experiment={experiment} index={index} persistHover={index === 0} />
@@ -141,6 +142,7 @@ function WorkCard({
     title: string
     medium: string
     description: string
+    domains?: string[]
     span: string
   }
   index: number
@@ -165,14 +167,16 @@ function WorkCard({
   }, [persistHover])
 
   const isActive = isHovered || isScrollActive
+  const isFirstCard = index === 0
+  const showDescription = isActive || isFirstCard
 
   return (
     <article
       ref={cardRef}
       className={cn(
-        "group relative border border-border/40 p-5 flex flex-col justify-between transition-all duration-500 cursor-pointer overflow-hidden",
-        // Make Daily CTF smaller on mobile
-        index === 0 ? "col-span-2 row-span-1 md:col-span-2 md:row-span-2" : experiment.span,
+        "group relative border border-border/40 p-4 md:p-5 flex flex-col justify-between transition-all duration-500 cursor-pointer overflow-hidden",
+        // Keep first card clearly visible on mobile
+        isFirstCard ? "col-span-2 row-span-2 md:col-span-2 md:row-span-2" : experiment.span,
         isActive && "border-accent/60",
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -193,12 +197,24 @@ function WorkCard({
         </span>
         <h3
           className={cn(
-            "mt-3 font-[var(--font-bebas)] text-2xl md:text-4xl tracking-tight transition-colors duration-300",
+            "mt-2 font-[var(--font-bebas)] text-xl md:text-4xl tracking-tight transition-colors duration-300",
             isActive ? "text-accent" : "text-foreground",
           )}
         >
           {experiment.title}
         </h3>
+
+        {experiment.domains && experiment.domains.length > 0 && (
+          <div className="mt-3 space-y-1.5">
+            {experiment.domains.map((domain, itemIndex) => (
+              <div key={domain} className="border border-border/40 bg-background/20 px-2.5 py-1.5 md:px-3 md:py-2">
+                <p className="font-mono text-[11px] md:text-sm text-foreground/90 leading-relaxed">
+                  {String(itemIndex + 1).padStart(2, "0")} {domain}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Description - reveals on hover */}
@@ -206,7 +222,7 @@ function WorkCard({
         <p
           className={cn(
             "font-mono text-xs text-muted-foreground leading-relaxed transition-all duration-500 max-w-[280px]",
-            isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
+            showDescription ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
           )}
         >
           {experiment.description}

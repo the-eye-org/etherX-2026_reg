@@ -18,37 +18,37 @@ type Signal = {
 
 const signals: Signal[] = [
   {
-    date: "2026.01.12",
-    title: "Registration Opens",
-    note: "PSG CSE, Msc, ECE and IT intake. One submission per teammate; confirm your callsign before locking in.",
-    tag: "Live",
+    date: "About",
+    title: "International Collaboration",
+    note: "Focused on cybersecurity and secure software development.",
+    tag: "Overview",
     featured: true,
   },
   {
-    date: "2026.01.18 - 2026.01.22",
-    title: "CTF Drops",
-    note: "5-day challenge series. Nightly portal challenges at 18:00 IST. Accuracy + first-blood bonuses.",
-    tag: "Online CTF",
+    date: "Team Rules",
+    title: "3–5 Members per Team",
+    note: "Create or join a team within the size limit.",
+    tag: "Required",
     featured: true,
   },
   {
-    date: "2026.01.22",
-    title: "Leaderboard Lock-In",
-    note: "Submission timestamps finalize ranking. Ties break on first-blood and clean writeups.",
-    tag: "Cutoff",
-    status: "Ship before 23:59 IST",
+    date: "Submission",
+    title: "GitHub Repository + Demo Video",
+    note: "Submission details will be provided later.",
+    tag: "Required",
+    status: "Both are mandatory",
   },
   {
-    date: "2026.01.23",
-    title: "Vibe Coding",
-    note: "Non-Technical build challenge. Fun coding sprint with constraints and live demos.",
-    tag: "Non-Tech Event",
+    date: "Evaluation",
+    title: "Shortlisting Round",
+    note: "7 teams shortlisted based on submission for the next round of evaluation.",
+    tag: "Process",
   },
   {
-    date: "2026.01.23",
-    title: "Hackathon",
-    note: "Top 10–15 teams meet on-site. Industry-grade briefs, scoring dashboards, and a full-day sprint.",
-    tag: "Onsite",
+    date: "Results",
+    title: "March 10, 2026",
+    note: "1st: ₹7500 · 2nd: ₹4500 · 3rd: ₹3000",
+    tag: "Prizes",
     featured: true,
   },
 ]
@@ -133,11 +133,8 @@ export function SignalsSection() {
     <section id="signals" ref={sectionRef} className="relative py-20 sm:py-32 px-4 sm:px-6 md:pl-28 md:pr-12">
       {/* Header */}
       <div ref={headerRef} className="mb-12 sm:mb-16">
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">What&apos;s New</span>
-        <h2 className="mt-4 font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">Fresh Drops</h2>
-        <p className="mt-4 max-w-xl font-mono text-xs text-muted-foreground leading-relaxed">
-          Time-ordered updates on dates, drops, and on-site checkpoints.
-        </p>
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">01 / Overview</span>
+        <h2 className="mt-4 font-[var(--font-bebas)] text-6xl md:text-8xl tracking-tight leading-none">EVENT BRIEF</h2>
       </div>
 
       {/* Featured Grid */}
@@ -151,7 +148,7 @@ export function SignalsSection() {
       {timelineSignals.length > 0 && (
         <div className="flex flex-col items-center">
           <h3 className="mb-8 font-[var(--font-bebas)] text-2xl md:text-4xl tracking-tight text-muted-foreground text-center">
-            Upcoming
+            Process
           </h3>
           <div ref={timelineRef} className="relative space-y-0 w-full max-w-3xl">
             {/* Timeline line */}
@@ -169,11 +166,13 @@ export function SignalsSection() {
 
 function FeaturedCard({ signal, index }: { signal: Signal; index: number }) {
   const [isHovered, setIsHovered] = useState(false)
+  const isPrizeCard = signal.tag === "Prizes"
   
   return (
     <article
       className={cn(
         "signal-card group relative border border-border/40 p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer overflow-hidden min-h-[280px]",
+        isPrizeCard && "border-accent/60 bg-accent/10",
         isHovered && "border-accent/60 bg-accent/5"
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -194,6 +193,7 @@ function FeaturedCard({ signal, index }: { signal: Signal; index: number }) {
           <div>
             <span className={cn(
               "block font-mono text-[10px] uppercase tracking-widest transition-colors",
+              isPrizeCard && "text-accent",
               isHovered ? "text-accent" : "text-muted-foreground"
             )}>
               {signal.tag}
@@ -204,20 +204,44 @@ function FeaturedCard({ signal, index }: { signal: Signal; index: number }) {
           </div>
         </div>
 
-        {/* Title */}
-        <h3
-          className={cn(
-            "font-[var(--font-bebas)] text-3xl md:text-4xl tracking-tight transition-colors duration-300 leading-tight",
-            isHovered ? "text-accent" : "text-foreground"
-          )}
-        >
-          {signal.title}
-        </h3>
+        {isPrizeCard ? (
+          <div className="space-y-4">
+            <h3 className={cn("font-[var(--font-bebas)] text-4xl md:text-5xl tracking-tight leading-none", isHovered ? "text-accent" : "text-foreground")}>
+              PRIZE POOL
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between border border-border/60 bg-background/40 px-3 py-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">1st Prize</span>
+                <span className="font-[var(--font-bebas)] text-2xl tracking-tight text-foreground">₹7500</span>
+              </div>
+              <div className="flex items-center justify-between border border-border/60 bg-background/30 px-3 py-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">2nd Prize</span>
+                <span className="font-[var(--font-bebas)] text-xl tracking-tight text-foreground">₹4500</span>
+              </div>
+              <div className="flex items-center justify-between border border-border/60 bg-background/20 px-3 py-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">3rd Prize</span>
+                <span className="font-[var(--font-bebas)] text-xl tracking-tight text-foreground">₹3000</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Title */}
+            <h3
+              className={cn(
+                "font-[var(--font-bebas)] text-3xl md:text-4xl tracking-tight transition-colors duration-300 leading-tight",
+                isHovered ? "text-accent" : "text-foreground"
+              )}
+            >
+              {signal.title}
+            </h3>
 
-        {/* Description */}
-        <p className="font-mono text-xs text-muted-foreground leading-relaxed">
-          {signal.note}
-        </p>
+            {/* Description */}
+            <p className="font-mono text-xs text-muted-foreground leading-relaxed">
+              {signal.note}
+            </p>
+          </>
+        )}
 
         {/* Status badge */}
         {signal.status && (
@@ -237,6 +261,14 @@ function FeaturedCard({ signal, index }: { signal: Signal; index: number }) {
           isHovered ? "bg-accent w-24" : "bg-border/40"
         )}
       />
+
+      {isPrizeCard && (
+        <div className="relative z-10 mt-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+            Results: {signal.title}
+          </p>
+        </div>
+      )}
       
       {/* Top right corner decoration */}
       <div

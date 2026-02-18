@@ -1,7 +1,6 @@
 "use client"
 
 import { useRef, useEffect } from "react"
-import { HighlightText } from "@/components/highlight-text"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -15,39 +14,25 @@ export function PrinciplesSection() {
   const principles = [
     {
       number: "01",
-      titleParts: [
-        { text: "SHIP", highlight: true },
-        { text: " FAST", highlight: false },
-      ],
-      description: "Speed matters: leaderboard ranks by timestamps, so optimize your solve flow.",
+      tag: "Submission",
+      title: "Submission Requirements",
+      description: "GitHub Repository and Demo Video are mandatory.",
       align: "left",
     },
     {
       number: "02",
-      titleParts: [
-        { text: "READ", highlight: true },
-        { text: " THE DOCS", highlight: false },
-      ],
-      description: "Finals ship with industry-grade briefs—respect constraints, own the details.",
+      tag: "Evaluation",
+      title: "Shortlisting Round",
+      description: "7 teams shortlisted based on submission for the next round.",
       align: "right",
     },
     {
       number: "03",
-      titleParts: [
-        { text: "TEAM ", highlight: false },
-        { text: "COHESION", highlight: true },
-      ],
-      description: "Split roles for recon, exploitation, and reporting. Ship together, score together.",
+      tag: "Results",
+      title: "Prizes",
+      description: "Results announced on March 10, 2026.",
+      rewards: ["1st Prize: ₹7500", "2nd Prize: ₹4500", "3rd Prize: ₹3000"],
       align: "left",
-    },
-    {
-      number: "04",
-      titleParts: [
-        { text: "HONEST ", highlight: false },
-        { text: "PLAY", highlight: true },
-      ],
-      description: "No dark patterns, no shortcuts. Clean submissions and transparent teamwork win.",
-      align: "right",
     },
   ]
 
@@ -68,14 +53,16 @@ export function PrinciplesSection() {
         },
       })
 
-      // Each principle slides in from its aligned side
+      // Staggered cards animation
       const articles = principlesRef.current?.querySelectorAll("article")
       articles?.forEach((article, index) => {
         const isRight = principles[index].align === "right"
         gsap.from(article, {
-          x: isRight ? 80 : -80,
+          x: isRight ? 70 : -70,
+          y: 30,
           opacity: 0,
-          duration: 1,
+          duration: 0.9,
+          delay: index * 0.06,
           ease: "power3.out",
           scrollTrigger: {
             trigger: article,
@@ -93,43 +80,45 @@ export function PrinciplesSection() {
     <section ref={sectionRef} id="principles" className="relative py-20 sm:py-32 px-4 sm:px-6 md:pl-28 md:pr-12">
       {/* Section header */}
       <div ref={headerRef} className="mb-16 sm:mb-24">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">03 / Guidelines</span>
-        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">Principles</h2>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">03 / Rules</span>
+        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">RULES</h2>
+        <p className="mt-3 font-mono text-[11px] sm:text-sm text-muted-foreground">Submission, evaluation, and result flow.</p>
       </div>
 
-      {/* Staggered principles */}
-      <div ref={principlesRef} className="space-y-16 sm:space-y-24 md:space-y-32">
+      {/* Staggered rule blocks */}
+      <div ref={principlesRef} className="space-y-8 sm:space-y-10 md:space-y-12">
         {principles.map((principle, index) => (
           <article
             key={index}
-            className={`flex flex-col gap-3 sm:gap-0 ${
-              principle.align === "right" ? "sm:items-end sm:text-right items-start text-left" : "items-start text-left"
+            className={`relative border border-border/40 p-5 sm:p-6 md:p-7 min-h-[200px] max-w-3xl ${
+              principle.align === "right" ? "md:ml-auto bg-muted/5" : "md:mr-auto bg-background/40"
             }`}
           >
-            {/* Annotation label */}
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-2 sm:mb-4">
-              {principle.number} / {principle.titleParts[0].text.split(" ")[0]}
-            </span>
+            <div className={principle.align === "right" ? "md:text-right" : "md:text-left"}>
+              <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+                {principle.number} / {principle.tag}
+              </span>
 
-            <h3 className="font-[var(--font-bebas)] text-2xl sm:text-4xl md:text-6xl lg:text-8xl tracking-tight leading-none">
-              {principle.titleParts.map((part, i) =>
-                part.highlight ? (
-                  <HighlightText key={i} parallaxSpeed={0.6}>
-                    {part.text}
-                  </HighlightText>
-                ) : (
-                  <span key={i}>{part.text}</span>
-                ),
+              <h3 className="mt-3 font-[var(--font-bebas)] text-3xl sm:text-4xl md:text-5xl tracking-tight leading-none text-foreground">
+                {principle.title}
+              </h3>
+
+              <p className="mt-3 font-mono text-[11px] sm:text-sm text-muted-foreground leading-relaxed">
+                {principle.description}
+              </p>
+
+              {principle.rewards && (
+                <div className="mt-5 space-y-2">
+                  {principle.rewards.map((reward) => (
+                    <div key={reward} className="border border-border/50 bg-muted/10 px-3 py-2">
+                      <p className="font-mono text-[10px] sm:text-xs text-foreground">{reward}</p>
+                    </div>
+                  ))}
+                </div>
               )}
-            </h3>
 
-            {/* Description */}
-            <p className="mt-3 sm:mt-6 max-w-xs sm:max-w-md font-mono text-[11px] sm:text-sm text-muted-foreground leading-relaxed">
-              {principle.description}
-            </p>
-
-            {/* Decorative line */}
-            <div className={`mt-4 sm:mt-8 h-[1px] bg-border w-16 sm:w-24 md:w-48 ${principle.align === "right" ? "mr-0" : "ml-0"}`} />
+              <div className={`mt-5 h-[1px] ${principle.align === "right" ? "ml-auto" : "mr-auto"} w-20 bg-border`} />
+            </div>
           </article>
         ))}
       </div>
