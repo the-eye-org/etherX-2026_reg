@@ -12,7 +12,7 @@ jobs:
       packages: write
 
     env:
-      IMAGE_NAME: ghcr.io/theeye-network/etherx-registration-site
+      IMAGE_NAME: ghcr.io/the-eye-org/etherx-registration-site
 
     steps:
       - name: Checkout
