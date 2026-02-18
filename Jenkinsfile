@@ -7,7 +7,7 @@ pipeline {
         REGISTRY = "ghcr.io"
 
         // Use your GitHub username/organization and repository name
-        GHCR_REPO = 'ghcr.io/theeye-network/etherx-registration-site'
+        GHCR_REPO = 'ghcr.io/the-eye-org/etherx-registration-site'
         // This should match your Docker image tag
         IMAGE_TAG = 'latest'
         DOCKER_CREDS = credentials('psgdcgit')
